@@ -22,7 +22,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Class which makes calls to Trello API to read data from a board
+ * A class which makes calls to the Trello API to read data from a board. Trello stores data in nested structures:
+ * boards contain lists, lists contain cards, cards contain description, comments, etc.,
+ * that's why a chain of nested calls is used here: first TrelloList objects are created, then each of these objects
+ * obtains TrelloCard objects, each of which obtains the data containing in a card.
  */
 public class RestCaller {
 
@@ -65,7 +68,7 @@ public class RestCaller {
     // Actions ------------------------------------------------------------------------------------
 
     /**
-     * Fetches a name for the beard with such ID. It will be used to give an output file a name.
+     * Fetches the name for a board with such ID. It will be used to give an output file a name.
      *
      * @param boardId the ID of this board
      * @return the name if this board

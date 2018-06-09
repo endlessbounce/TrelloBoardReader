@@ -1,13 +1,11 @@
 package by.trellohacker.app;
 
 import by.trellohacker.constant.AppConst;
-import by.trellohacker.entity.TrelloList;
 import by.trellohacker.exception.ThreadDefaultHandler;
 import by.trellohacker.reader.DataFileReader;
 import by.trellohacker.restcall.RestCaller;
 import by.trellohacker.writer.DataFileWriter;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class TrelloClient {
@@ -42,7 +40,6 @@ public class TrelloClient {
                     .stream()
                     .filter(s -> !AppConst.KEY.equals(s) && !AppConst.TOKEN.equals(s))
                     .map(s -> properties.getProperty(s))
-                    .collect(Collectors.toList())
                     .forEach(s -> processBoard(s));
         });
     }
@@ -58,10 +55,9 @@ public class TrelloClient {
                 .append(EXTENSION)
                 .toString();
 
-        List<TrelloList> trelloLists = restCaller.fetchLists(boardId);
-        String data = trelloLists.stream()
+        String data = restCaller.fetchLists(boardId)
+                .stream()
                 .map(trelloList -> trelloList.toString())
-                .peek(string -> System.out.println(string.toString()))
                 .collect(Collectors.joining());
 
         DataFileWriter.writeIntoFile(writePath, data);
