@@ -1,4 +1,4 @@
-package by.trellohacker.constant;
+package by.trelloreader.constant;
 
 /**
  * Some constants used throughout the application

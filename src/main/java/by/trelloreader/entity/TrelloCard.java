@@ -1,6 +1,6 @@
-package by.trellohacker.entity;
+package by.trelloreader.entity;
 
-import by.trellohacker.constant.AppConst;
+import by.trelloreader.constant.AppConst;
 import lombok.Getter;
 import lombok.Setter;
 

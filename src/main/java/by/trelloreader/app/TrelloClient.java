@@ -1,10 +1,10 @@
-package by.trellohacker.app;
+package by.trelloreader.app;
 
-import by.trellohacker.constant.AppConst;
-import by.trellohacker.exception.ThreadDefaultHandler;
-import by.trellohacker.reader.DataFileReader;
-import by.trellohacker.restcall.RestCaller;
-import by.trellohacker.writer.DataFileWriter;
+import by.trelloreader.constant.AppConst;
+import by.trelloreader.exception.ThreadDefaultHandler;
+import by.trelloreader.reader.DataFileReader;
+import by.trelloreader.restcall.RestCaller;
+import by.trelloreader.writer.DataFileWriter;
 
 import java.util.stream.Collectors;
 

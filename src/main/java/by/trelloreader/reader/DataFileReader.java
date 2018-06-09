@@ -1,6 +1,6 @@
-package by.trellohacker.reader;
+package by.trelloreader.reader;
 
-import by.trellohacker.constant.AppConst;
+import by.trelloreader.constant.AppConst;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -30,8 +30,7 @@ public class DataFileReader {
                 System.out.println("Reading file...");
                 result = Optional.of(properties);
             } catch (IOException e) {
-                System.out.println("Error while reading the file. Please specify another file.");
-                System.out.println("Attempts left: " + --attempts);
+                System.out.println("Error while reading the file. Please specify another file.\nAttempts left: " + --attempts);
 
                 if (attempts == 0) {
                     System.out.println("Exiting application.");

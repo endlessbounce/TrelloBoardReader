@@ -1,8 +1,8 @@
-package by.trellohacker.restcall;
+package by.trelloreader.restcall;
 
-import by.trellohacker.constant.AppConst;
-import by.trellohacker.entity.TrelloCard;
-import by.trellohacker.entity.TrelloList;
+import by.trelloreader.constant.AppConst;
+import by.trelloreader.entity.TrelloCard;
+import by.trelloreader.entity.TrelloList;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -79,8 +79,8 @@ public class RestCaller {
                     .getString(VALUE);
         } catch (IOException e) {
             LOGGER.catching(e);
+            return AppConst.EMPTY;
         }
-        return AppConst.EMPTY;
     }
 
     /**

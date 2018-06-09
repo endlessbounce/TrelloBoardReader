@@ -1,4 +1,4 @@
-package by.trellohacker.exception;
+package by.trelloreader.exception;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
