@@ -1,22 +1,33 @@
 package by.trelloreader.app;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import by.trelloreader.constant.AppConst;
+import by.trelloreader.entity.TrelloList;
 import by.trelloreader.exception.ThreadDefaultHandler;
 import by.trelloreader.reader.DataFileReader;
 import by.trelloreader.restcall.RestCaller;
 import by.trelloreader.writer.DataFileWriter;
 
-import java.util.stream.Collectors;
-
 public class TrelloClient {
 
     // Constants ----------------------------------------------------------------------------------
-    private static final String EXTENSION = ".txt";
-
+    private static final String TXT = ".txt";
+    private static final String JSON = ".json";
+    private final static Logger LOGGER = LogManager.getLogger();
+    
     // Vars ---------------------------------------------------------------------------------------
     private static RestCaller restCaller;
     private static String outputPath;
-
+    private static ObjectMapper mapper = new ObjectMapper();
+    
     // Actions ------------------------------------------------------------------------------------
 
     /**
@@ -42,6 +53,9 @@ public class TrelloClient {
                     .map(s -> properties.getProperty(s))
                     .forEach(s -> processBoard(s));
         });
+        
+        System.out.println("Job done.");
+        DataFileReader.close();
     }
 
     /**
@@ -52,15 +66,23 @@ public class TrelloClient {
     private static void processBoard(String boardId) {
         String writePath = new StringBuilder().append(outputPath)
                 .append(restCaller.fetchBoardName(boardId).replaceAll("\\.|/", ""))
-                .append(EXTENSION)
+                .append(TXT)
                 .toString();
-
-        String data = restCaller.fetchLists(boardId)
+        
+        List<TrelloList> list = restCaller.fetchLists(boardId);
+        
+        String data = list
                 .stream()
                 .map(trelloList -> trelloList.toString())
                 .collect(Collectors.joining());
 
-        DataFileWriter.writeIntoFile(writePath, data);
+        try {
+        	DataFileWriter.writeToFile(writePath, data);
+			DataFileWriter.writeToFile(writePath.replace(TXT, JSON), mapper.writeValueAsString(list));
+		} catch (IOException e) {
+			LOGGER.error("Error while writing to path: " + writePath, e);
+		}
+        
     }
 
     /**
@@ -69,11 +91,11 @@ public class TrelloClient {
     private static void printIntro() {
         System.out.println(new StringBuilder()
                 .append("**************************************************\n")
-                .append("Trello.com data reader by endlessbouce. V1.0-2018/06/08\n")
+                .append("Trello.com data reader by endlessbouce. V1.1-2018/06/08\n")
                 .append("**************************************************\n")
                 .append("The program requires from you to provide a *.properties file.\n")
                 .append("It fetches cards (names, descriptions and comments) of all lists from boards listed in the file,\n")
-                .append("and writes it into a file, destination of which you specify.\n")
+                .append("and writes it into files (.txt and .json), destination of which you specify.\n")
                 .append("The file must contain your key and token to access necessary account (key=***, token=***),\n")
                 .append("and a list of boards' IDs (e.g. board1=***).\n")
                 .append("**************************************************\n"));

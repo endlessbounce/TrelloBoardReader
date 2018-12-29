@@ -1,8 +1,5 @@
 package by.trelloreader.writer;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,9 +9,6 @@ import java.io.IOException;
  */
 public class DataFileWriter {
 
-    // Constants ----------------------------------------------------------------------------------
-    private final static Logger LOGGER = LogManager.getLogger();
-
     // Actions ------------------------------------------------------------------------------------
 
     /**
@@ -22,16 +16,15 @@ public class DataFileWriter {
      *
      * @param writePath a path to create file and write into
      * @param data      to write
+     * @throws IOException 
      */
-    public static void writeIntoFile(String writePath, String data) {
+    public static void writeToFile(String writePath, String data) throws IOException {
 
         System.out.println("Writing to " + writePath + "...");
 
         try (FileWriter writer = new FileWriter(new File(writePath))) {
             writer.write(data);
             writer.flush();
-        } catch (IOException e) {
-            LOGGER.error("Error while writing to path: " + writePath, e);
         }
     }
 }

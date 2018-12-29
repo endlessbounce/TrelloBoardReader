@@ -1,5 +1,20 @@
 package by.trelloreader.restcall;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.JsonValue;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import by.trelloreader.constant.AppConst;
 import by.trelloreader.entity.TrelloCard;
 import by.trelloreader.entity.TrelloList;
@@ -7,19 +22,6 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonValue;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A class which makes calls to the Trello API to read data from a board. Trello stores data in nested structures:
@@ -142,7 +144,7 @@ public class RestCaller {
                     .collect(Collectors.toList());
         } catch (IOException e) {
             LOGGER.catching(e);
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
     }
 

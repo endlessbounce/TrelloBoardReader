@@ -1,45 +1,65 @@
 package by.trelloreader.entity;
 
-import by.trelloreader.constant.AppConst;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
+import by.trelloreader.constant.AppConst;
+
 /**
- * This entity corresponds to a card from Trello, having such info as name, description and
- * comments
+ * This entity corresponds to a card from Trello, having such info as name,
+ * description and comments
  */
 public class TrelloCard {
-    @Getter
-    @Setter
-    private String id;
-    @Getter
-    @Setter
-    private String name;
-    @Getter
-    @Setter
-    private String description;
-    @Getter
-    @Setter
-    private List<String> comments;
+	private String id;
+	private String name;
+	private String description;
+	private List<String> comments;
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(name).append(AppConst.NEW_LINE);
+	public String getId() {
+		return id;
+	}
 
-        if (!description.isEmpty()) {
-            sb.append(description).append(AppConst.NEW_LINE);
-        }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-        if (!comments.isEmpty()) {
-            sb.append(comments.stream().collect(Collectors.joining(AppConst.NEW_LINE)));
-        }
+	public String getName() {
+		return name;
+	}
 
-        return sb.append("--------------------------------------------")
-                .append(AppConst.NEW_LINE)
-                .toString();
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public List<String> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<String> comments) {
+		this.comments = comments;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("//new_card//");
+		sb.append(name).append(AppConst.NEW_LINE);
+
+		if (!description.isEmpty()) {
+			sb.append(description).append(AppConst.NEW_LINE);
+		}
+
+		if (!comments.isEmpty()) {
+			sb.append(comments.stream().collect(Collectors.joining(AppConst.NEW_LINE)));
+		}
+
+		return sb.append(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>").append(AppConst.NEW_LINE).toString();
+	}
 }
