@@ -15,6 +15,6 @@ public class ThreadDefaultHandler implements Thread.UncaughtExceptionHandler {
     // Actions ------------------------------------------------------------------------------------
     @Override
     public void uncaughtException(Thread t, Throwable e) {
-        LOGGER.error("**********Uncaught Exception:  ", e);
+        LOGGER.error("Uncaught Exception:  ", e);
     }
 }

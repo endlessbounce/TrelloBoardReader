@@ -1,6 +1,5 @@
 package by.trelloreader.app;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,7 +78,7 @@ public class TrelloClient {
         try {
         	DataFileWriter.writeToFile(writePath, data);
 			DataFileWriter.writeToFile(writePath.replace(TXT, JSON), mapper.writeValueAsString(list));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			LOGGER.error("Error while writing to path: " + writePath, e);
 		}
         
@@ -91,7 +90,7 @@ public class TrelloClient {
     private static void printIntro() {
         System.out.println(new StringBuilder()
                 .append("**************************************************\n")
-                .append("Trello.com data reader by endlessbouce. V1.1-2018/06/08\n")
+                .append("Trello.com data reader by endlessbouce. V1.2-2019/02/02\n")
                 .append("**************************************************\n")
                 .append("The program requires from you to provide a *.properties file.\n")
                 .append("It fetches cards (names, descriptions and comments) of all lists from boards listed in the file,\n")

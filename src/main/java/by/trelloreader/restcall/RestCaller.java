@@ -1,6 +1,6 @@
 package by.trelloreader.restcall;
 
-import java.io.IOException;
+import java.io.IOException;	
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,12 +76,14 @@ public class RestCaller {
      * @return the name if this board
      */
     public String fetchBoardName(String boardId) {
-        try (JsonReader jsonReader = Json.createReader(new StringReader(call(buildURL(boardId, BOARD_RESOURCE, FIELDS_ALL))))) {
+    	String response = call(buildURL(boardId, BOARD_RESOURCE, FIELDS_ALL));
+    	
+        try (JsonReader jsonReader = Json.createReader(new StringReader(response))) {
             return jsonReader.readObject()
                     .getString(VALUE);
-        } catch (IOException e) {
-            LOGGER.catching(e);
-            return AppConst.EMPTY;
+        } catch (Exception e) {
+        	LOGGER.error("Error fetching board name with id=" + boardId + ". Response: " + response, e);
+            return "Error_" + boardId;
         }
     }
 
@@ -93,14 +95,15 @@ public class RestCaller {
      */
     public List<TrelloList> fetchLists(String boardId) {
         List<TrelloList> result = new ArrayList<>();
-
-        try (JsonReader jsonReader = Json.createReader(new StringReader(call(buildURL(boardId, LIST_RESOURCE, FIELDS_LIST))))) {
+        String response = call(buildURL(boardId, LIST_RESOURCE, FIELDS_LIST));
+        
+        try (JsonReader jsonReader = Json.createReader(new StringReader(response))) {
             result = jsonReader.readArray()
                     .stream()
                     .map(jsonValue -> mapToTrelloList(jsonValue))
                     .collect(Collectors.toList());
-        } catch (IOException e) {
-            LOGGER.catching(e);
+        } catch (Exception e) {
+        	LOGGER.error("Error fetching lists for board #" + boardId + ". Response: " + response, e);
         }
 
         result.forEach(trelloList -> trelloList.setCards(fetchCards(trelloList.getId())));
@@ -115,14 +118,15 @@ public class RestCaller {
      */
     public List<TrelloCard> fetchCards(String listId) {
         List<TrelloCard> result = new ArrayList<>();
-
-        try (JsonReader jsonReader = Json.createReader(new StringReader(call(buildURL(listId, CARD_RESOURCE, FIELDS_CARD))))) {
+        String response = call(buildURL(listId, CARD_RESOURCE, FIELDS_CARD));
+        
+        try (JsonReader jsonReader = Json.createReader(new StringReader(response))) {
             result = jsonReader.readArray()
                     .stream()
                     .map(jsonValue -> mapToTrelloCard(jsonValue))
                     .collect(Collectors.toList());
-        } catch (IOException e) {
-            LOGGER.catching(e);
+        } catch (Exception e) {
+        	LOGGER.error("Error fetching cards for list #" + listId + ". Response: " + response, e);
         }
 
         result.forEach(trelloCard -> trelloCard.setComments(fetchComments(trelloCard.getId())));
@@ -134,16 +138,19 @@ public class RestCaller {
      *
      * @param cardId the ID of this card
      * @return the list of comments of this card
+     * @throws IOException 
      */
-    public List<String> fetchComments(String cardId) {
-        try (JsonReader jsonReader = Json.createReader(new StringReader(call(buildCommentsURL(cardId, COMMENT_RESOURCE))))) {
+    public List<String> fetchComments(String cardId) 	{
+    	String response = call(buildCommentsURL(cardId, COMMENT_RESOURCE));
+    	
+    	try (JsonReader jsonReader = Json.createReader(new StringReader(response));) {
             return jsonReader.readArray()
                     .stream()
                     .map(jsonValue -> mapToString(jsonValue))
                     .filter(string -> !string.isEmpty())
                     .collect(Collectors.toList());
-        } catch (IOException e) {
-            LOGGER.catching(e);
+        } catch (Exception e) {
+            LOGGER.error("Error fetching comments for card #" + cardId + ". Response: " + response, e);
             return Collections.emptyList();
         }
     }
@@ -155,13 +162,19 @@ public class RestCaller {
      * @return String of a JSON response
      * @throws IOException
      */
-    private String call(String url) throws IOException {
-        Request request = new Request.Builder()
+    private String call(String url) {
+    	Response response = null;
+    	Request request = new Request.Builder()
                 .url(url)
                 .build();
-
-        Response response = client.newCall(request).execute();
-        return response.body().string().toString();
+        
+        try {
+        	response = client.newCall(request).execute();
+        	return response.body().string().toString();
+		} catch (Exception e) {
+			LOGGER.error("Error making call to "+ url + ". Response: " + response, e);
+			return AppConst.EMPTY;
+		}
     }
 
     /**
