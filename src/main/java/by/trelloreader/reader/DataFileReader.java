@@ -1,49 +1,57 @@
 package by.trelloreader.reader;
 
-import by.trelloreader.constant.AppConst;
-
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Optional;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import by.trelloreader.constant.AppConst;
 
 /**
  * Class to read user input data
  */
 public class DataFileReader {
-	
-	private static Scanner scanner = new Scanner(System.in); 
-	
+	private final static Logger LOGGER = LogManager.getLogger();
+	private static Scanner scanner = new Scanner(System.in);
+
+	public static String readFile(URI uri) {
+		try {
+			return Files.readAllLines(Paths.get(uri))
+					.stream()
+					.collect(Collectors.joining("\n"));
+		} catch (IOException e) {
+			LOGGER.error("Couldn't read file: " + uri, e);
+			System.out.println("Couldn't read file: " + uri);
+		}
+		return "";
+	}
+
 	/**
-	 * Reads the properties file specified by a user
-	 *
-	 * @return optional of properties if data was read successfully or an empty
-	 *         Optional
+	 * 
+	 * @param propertiesFilePath
+	 * @return
 	 */
-	public static Optional<Properties> readProperties() {
-		int attempts = 5;
+	public static Properties readProperties(String propertiesFilePath) {
 		Properties properties = new Properties();
-		Optional<Properties> result = Optional.empty();
 
-		while (!result.isPresent() && attempts > 0) {
-
-			try {
-				properties.load(new FileInputStream(readData()));
-				System.out.println("Reading file...");
-				result = Optional.of(properties);
-			} catch (IOException e) {
-				System.out.println(
-						"Error while reading the file. Please specify another file.\nAttempts left: " + --attempts);
-
-				if (attempts == 0) {
-					System.out.println("Exiting application.");
-				}
-			}
-
+		try {
+			System.out.println("Loading properties file: " + propertiesFilePath);
+			properties.load(new FileInputStream(propertiesFilePath));
+			System.out.println("Successfully loaded.");
+			return properties;
+		} catch (IOException e) {
+			LOGGER.error("Error loading: " + propertiesFilePath, e);
+			System.out.println("Error loading: " + propertiesFilePath + ". Please specify another file.");
 		}
 
-		return result;
+		return null;
 	}
 
 	/**
@@ -52,15 +60,16 @@ public class DataFileReader {
 	 * @return input data
 	 */
 	public static String readData() {
-        String input = AppConst.EMPTY;
+		String input = AppConst.EMPTY;
 
-        while (input.trim().isEmpty()) {
-            input = scanner.nextLine();
-        }
+		while (input.trim()
+				.isEmpty()) {
+			input = scanner.nextLine();
+		}
 
-        return input;
+		return input;
 	}
-	
+
 	public static void close() {
 		scanner.close();
 	}
