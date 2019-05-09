@@ -11,6 +11,8 @@ import java.util.zip.ZipOutputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import by.trelloreader.writer.DataFileWriter;
+
 public final class ZipUtil {
 	private final static Logger LOGGER = LogManager.getLogger();
 
@@ -23,11 +25,7 @@ public final class ZipUtil {
 				ZipEntry zipEntry = new ZipEntry(fileToZip.getName());
 				zipOut.putNextEntry(zipEntry);
 
-				byte[] bytes = new byte[1024];
-				int length;
-				while ((length = fis.read(bytes)) >= 0) {
-					zipOut.write(bytes, 0, length);
-				}
+				DataFileWriter.writeToOutputStream(zipOut, fis);
 				fis.close();
 			}
 			zipOut.close();

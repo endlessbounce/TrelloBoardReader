@@ -1,7 +1,7 @@
 package by.trelloreader.app;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.IOException;
+import java.io.InputStream;
 
 import by.trelloreader.boardprocessor.BoardReader;
 import by.trelloreader.exception.ThreadDefaultHandler;
@@ -14,9 +14,9 @@ public class TrelloClient {
 	 * file and processes each board by its ID.
 	 *
 	 * @param args
-	 * @throws URISyntaxException 
+	 * @throws IOException
 	 */
-	public static void main(String[] args) throws URISyntaxException {
+	public static void main(String[] args) throws IOException {
 		Thread.currentThread()
 				.setUncaughtExceptionHandler(new ThreadDefaultHandler());
 		printIntro();
@@ -36,13 +36,14 @@ public class TrelloClient {
 	/**
 	 * Usage information about this program.
 	 * 
-	 * @throws URISyntaxException
+	 * @throws IOException
 	 */
-	private static void printIntro() throws URISyntaxException {
-		URI uri = TrelloClient.class.getClassLoader()
-				.getResource("readme.txt")
-				.toURI()
-				.normalize();
-		System.out.println(DataFileReader.readFile(uri));
+	private static void printIntro() throws IOException {
+		InputStream is = TrelloClient.class.getClassLoader()
+				.getResourceAsStream("readme.txt");
+		if (is != null) {
+			System.out.println(DataFileReader.readInputStream(is));
+			is.close();
+		}
 	}
 }

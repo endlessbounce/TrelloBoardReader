@@ -1,7 +1,9 @@
 package by.trelloreader.reader;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -13,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import by.trelloreader.constant.AppConst;
+import by.trelloreader.writer.DataFileWriter;
 
 /**
  * Class to read user input data
@@ -20,6 +23,17 @@ import by.trelloreader.constant.AppConst;
 public class DataFileReader {
 	private final static Logger LOGGER = LogManager.getLogger();
 	private static Scanner scanner = new Scanner(System.in);
+
+	// https://stackoverflow.com/questions/309424/how-do-i-read-convert-an-inputstream-into-a-string-in-java
+	public static String readInputStream(InputStream is) {
+		try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+			DataFileWriter.writeToOutputStream(os, is);
+			return os.toString("UTF-8");
+		} catch (IOException e) {
+			LOGGER.error(e);
+		}
+		return AppConst.EMPTY;
+	}
 
 	public static String readFile(URI uri) {
 		try {
@@ -30,7 +44,7 @@ public class DataFileReader {
 			LOGGER.error("Couldn't read file: " + uri, e);
 			System.out.println("Couldn't read file: " + uri);
 		}
-		return "";
+		return AppConst.EMPTY;
 	}
 
 	/**
