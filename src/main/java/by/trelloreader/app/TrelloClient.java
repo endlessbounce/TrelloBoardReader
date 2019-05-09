@@ -9,13 +9,6 @@ import by.trelloreader.reader.DataFileReader;
 
 public class TrelloClient {
 
-	/**
-	 * Reads user input of path to write to and file to read from. Reads properties
-	 * file and processes each board by its ID.
-	 *
-	 * @param args
-	 * @throws IOException
-	 */
 	public static void main(String[] args) throws IOException {
 		Thread.currentThread()
 				.setUncaughtExceptionHandler(new ThreadDefaultHandler());
@@ -33,11 +26,6 @@ public class TrelloClient {
 		System.out.println("Job done.");
 	}
 
-	/**
-	 * Usage information about this program.
-	 * 
-	 * @throws IOException
-	 */
 	private static void printIntro() throws IOException {
 		InputStream is = TrelloClient.class.getClassLoader()
 				.getResourceAsStream("readme.txt");

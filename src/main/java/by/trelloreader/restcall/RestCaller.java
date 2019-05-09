@@ -23,12 +23,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-/**
- * A class which makes calls to the Trello API to read data from a board. Trello stores data in nested structures:
- * boards contain lists, lists contain cards, cards contain description, comments, etc.,
- * that's why a chain of nested calls is used here: first TrelloList objects are created, then each of these objects
- * obtains TrelloCard objects, each of which obtains the data containing in a card.
- */
 public class RestCaller {
 
     // Constants ----------------------------------------------------------------------------------

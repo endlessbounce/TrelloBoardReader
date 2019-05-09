@@ -1,5 +1,6 @@
 package by.trelloreader.util;
 
+// StringUtil
 public final class StringUtil {
 
 	public static boolean isEmpty(String s) {

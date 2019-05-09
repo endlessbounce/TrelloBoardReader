@@ -5,10 +5,6 @@ import java.util.stream.Collectors;
 
 import by.trelloreader.constant.AppConst;
 
-/**
- * This entity corresponds to a list from Trello, having such info as name and
- * list of cards
- */
 public class TrelloList {
 	private String id;
 	private String name;

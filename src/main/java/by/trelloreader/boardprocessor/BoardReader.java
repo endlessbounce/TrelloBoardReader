@@ -19,6 +19,7 @@ import by.trelloreader.util.StringUtil;
 import by.trelloreader.util.ZipUtil;
 import by.trelloreader.writer.DataFileWriter;
 
+// fetches data from trello
 public class BoardReader {
 	private final static Logger LOGGER = LogManager.getLogger();
 	private static ObjectMapper mapper = new ObjectMapper();

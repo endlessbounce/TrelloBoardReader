@@ -17,9 +17,6 @@ import org.apache.logging.log4j.Logger;
 import by.trelloreader.constant.AppConst;
 import by.trelloreader.writer.DataFileWriter;
 
-/**
- * Class to read user input data
- */
 public class DataFileReader {
 	private final static Logger LOGGER = LogManager.getLogger();
 	private static Scanner scanner = new Scanner(System.in);
@@ -47,11 +44,6 @@ public class DataFileReader {
 		return AppConst.EMPTY;
 	}
 
-	/**
-	 * 
-	 * @param propertiesFilePath
-	 * @return
-	 */
 	public static Properties readProperties(String propertiesFilePath) {
 		Properties properties = new Properties();
 
@@ -68,11 +60,6 @@ public class DataFileReader {
 		return null;
 	}
 
-	/**
-	 * Simple reader of user's input data
-	 *
-	 * @return input data
-	 */
 	public static String readData() {
 		String input = AppConst.EMPTY;
 

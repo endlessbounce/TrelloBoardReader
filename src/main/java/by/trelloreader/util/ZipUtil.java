@@ -13,8 +13,8 @@ import org.apache.logging.log4j.Logger;
 
 import by.trelloreader.writer.DataFileWriter;
 
-// Zip Utils
 public final class ZipUtil {
+
 	private final static Logger LOGGER = LogManager.getLogger();
 
 	public static void zipMultipleFiles(List<String> srcFiles, String outputZip) {
