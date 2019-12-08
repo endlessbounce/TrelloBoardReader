@@ -43,7 +43,7 @@ public class BoardReader {
 
 		String key = properties.getProperty("app_key");
 		String token = properties.getProperty("app_token");
-		outputZipPath = properties.getProperty("app_output_path");
+		outputZipPath = properties.getProperty("app_output_path") + System.currentTimeMillis() + ".zip";
 		if (StringUtil.isAnyEmpty(key, token, outputZipPath)) {
 			System.out.println("Initialization failed. Incorrect Key, Token or OutputPath.");
 			return false;
@@ -64,7 +64,7 @@ public class BoardReader {
 
 	public void read() {
 		if (!isInited) {
-			throw new IllegalArgumentException("The Reader wasn't initialized.");
+			throw new IllegalArgumentException("The Reader hasn't been initialized.");
 		}
 
 		System.out.println("Reading...");
